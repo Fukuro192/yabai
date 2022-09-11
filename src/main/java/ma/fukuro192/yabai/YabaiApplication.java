@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AtdlApplication {
+public class YabaiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AtdlApplication.class, args);
+		SpringApplication.run(YabaiApplication.class, args);
 	}
 
 }
