@@ -10,7 +10,7 @@ import javax.persistence.Lob;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-public class Post {
+public class BlogPost {
     
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -22,7 +22,7 @@ public class Post {
     @Lob
     private String text;
 
-    public Post(
+    public BlogPost(
         Date creationDate,
         String text
     ) {
