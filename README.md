@@ -12,6 +12,12 @@ spring.datasource.username=dev_user
 spring.datasource.password=UrP@55w0rd!!!
 ```
 
+and write your secret secret string for the JSON Web Token generator on the same file:
+
+```
+app.jwtSecret=Ur53cr37
+```
+
 ## run
 
 you need to compile the maven project into a `jar`-file:
