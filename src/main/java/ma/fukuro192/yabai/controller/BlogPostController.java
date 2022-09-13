@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import ma.fukuro192.yabai.entity.BlogPost;
+import ma.fukuro192.yabai.exception.BlogPostNotFoundException;
 import ma.fukuro192.yabai.repository.BlogPostRepository;
 
 @RestController
@@ -35,7 +36,7 @@ public class BlogPostController {
         @RequestParam(name="text") MultipartFile textFile
     ) throws IOException {
         String text = new String(textFile.getBytes());
-        BlogPost blogPost= new BlogPost(new Date(), text);
+        BlogPost blogPost = new BlogPost(new Date(), text);
         blogPost = blogPostRepository.save(blogPost);
         return blogPost;
     }
@@ -50,8 +51,9 @@ public class BlogPostController {
     }
 
     @GetMapping("/{uuid}")
-    public BlogPost getOne(@PathVariable(name="uuid") String uuid) throws Exception {
-        BlogPost blogPost = blogPostRepository.findById(uuid).orElseThrow(() -> new Exception("could not find post with id: " + uuid));
+    public BlogPost getOne(@PathVariable(name="uuid") String uuid) throws BlogPostNotFoundException {
+        BlogPost blogPost = blogPostRepository.findById(uuid)
+            .orElseThrow(() -> new BlogPostNotFoundException("could not find post with id: " + uuid));
         return blogPost;
     }
 
@@ -72,9 +74,10 @@ public class BlogPostController {
     public BlogPost updateUploadOne(
         @PathVariable(name = "uuid") String uuid,
         @RequestParam(name="text") MultipartFile textFile
-    ) throws Exception {
+    ) throws IOException, BlogPostNotFoundException {
         String text = new String(textFile.getBytes());
-        BlogPost blogPost = blogPostRepository.findById(uuid).orElseThrow(() -> new Exception("could not find post with id: " + uuid));
+        BlogPost blogPost = blogPostRepository.findById(uuid)
+            .orElseThrow(() -> new BlogPostNotFoundException("could not find post with id: " + uuid));
         blogPost.setText(text);
         blogPost = blogPostRepository.save(blogPost);
         return blogPost;
@@ -84,8 +87,9 @@ public class BlogPostController {
     public BlogPost updateOne(
         @PathVariable(name = "uuid") String uuid,
         @RequestParam(name="text") String text
-    ) throws Exception {
-        BlogPost blogPost = blogPostRepository.findById(uuid).orElseThrow(() -> new Exception("could not find post with id: " + uuid));
+    ) throws BlogPostNotFoundException {
+        BlogPost blogPost = blogPostRepository.findById(uuid)
+            .orElseThrow(() -> new BlogPostNotFoundException("could not find post with id: " + uuid));
         blogPost.setText(text);
         blogPost = blogPostRepository.save(blogPost);
         return blogPost;
@@ -94,8 +98,9 @@ public class BlogPostController {
     @PostMapping("/{uuid}/delete")
     public String deleteOne(
         @PathVariable(name = "uuid") String uuid
-    ) throws Exception {
-        BlogPost blogPost = blogPostRepository.findById(uuid).orElseThrow(() -> new Exception("could not find post with id: " + uuid));
+    ) throws BlogPostNotFoundException {
+        BlogPost blogPost = blogPostRepository.findById(uuid)
+            .orElseThrow(() -> new BlogPostNotFoundException("could not find post with id: " + uuid));
         blogPostRepository.delete(blogPost);
         return "ok";
     }
